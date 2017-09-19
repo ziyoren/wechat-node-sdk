@@ -71,12 +71,39 @@ function _handler(req, res){
 
 ## Using with Node http server
 ```
-var options = {
-      'token':'tokenaccesskey',           //填写你设定的Token
-      'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
-      'appid':'wxappid',                  //填写高级调用功能的appid
-      'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
-    };
-  
+var http = require("http");
+var url = require("url");
+var qs = require("querystring");
+var wechat = require("wechat-node-sdk");
+
+http.createServer(function (req, res) {
+    var _url = url.parse(req.url);
+    var _query = qs.parse(_url.query);
+    var originalUrl = _url.pathname;
+
+    if (originalUrl == '/wechat') {
+        //微信公众号相关配置参数
+        var options = {
+          'token':'tokenaccesskey',           //填写你设定的Token
+          'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
+          'appid':'wxappid',                  //填写高级调用功能的appid
+          'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
+        };
+        //实例化微信类
+        var wx = new wechat(options).run(req, res);
+        //监听ready事件，将回复消息的业务逻辑写在这里的回调方法里
+        wx.on('ready', function (_wechat, req, res) {
+            console.log('我被请求了：', req.query);
+            //todo some thing
+        });
+
+    } else {
+        res.writeHead(200, {
+            "content-type": "text/plain"
+        });
+        res.write("hello wechat!");
+        res.end();
+    }
+}).listen(3000);
 
 ```
