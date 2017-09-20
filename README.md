@@ -47,24 +47,23 @@ app.use('/wechat', _handler );
 
 
 var options = {
-      'token':'tokenaccesskey',           //填写你设定的Token
-      'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
-      'appid':'wxappid',                  //填写高级调用功能的appid
-      'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
-    };
+    'token':'tokenaccesskey',           //填写你设定的Token
+    'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
+    'appid':'wxappid',                  //填写高级调用功能的appid
+    'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
+};
     
-    
+var wx = new wechat(options);    
+wx.on('ready', function (_wechat, req, res) {
+    var data = _wechat.getRevData();
+    console.log('收到的内容：',data);
+    data = JSON.stringify(data);
+    _wechat.text('你好！' + data).reply();
+});  
+  
+  
 function _handler(req, res){
-
-   var wx = new wechat(options)
-       .run(req, res)
-       .on('ready', function (_wechat, req, res) {
-        var data = _wechat.getRevData();
-        console.log('收到的内容：',data);
-        data = JSON.stringify(data);
-        _wechat.text('你好！' + data).reply();
-    });
-    
+    wx.run(req, res);
 }
 
 ```
@@ -76,27 +75,33 @@ var url = require("url");
 var qs = require("querystring");
 var wechat = require("wechat-node-sdk");
 
+
+//微信公众号相关配置参数
+var options = {
+    'token':'tokenaccesskey',           //填写你设定的Token
+    'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
+    'appid':'wxappid',                  //填写高级调用功能的appid
+    'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
+};
+
+
+//实例化微信类
+var wx = new wechat(options);
+
+//监听ready事件，将回复消息的业务逻辑写在这里的回调方法里
+wx.on('ready', function (_wechat, req, res) {
+    console.log('我收到的数据是：', _wechat.getRevData() );
+    //todo some thing
+});
+
+
 http.createServer(function (req, res) {
     var _url = url.parse(req.url);
     var _query = qs.parse(_url.query);
     var originalUrl = _url.pathname;
 
     if (originalUrl == '/wechat') {
-        //微信公众号相关配置参数
-        var options = {
-          'token':'tokenaccesskey',           //填写你设定的Token
-          'encodingaeskey':'encodingaeskey',  //填写加密用的EncodingAESKey
-          'appid':'wxappid',                  //填写高级调用功能的appid
-          'appsecret':'xxxxxxxxxxxxxxxxxxx'   //填写高级调用功能的密钥
-        };
-        //实例化微信类
-        var wx = new wechat(options).run(req, res);
-        //监听ready事件，将回复消息的业务逻辑写在这里的回调方法里
-        wx.on('ready', function (_wechat, req, res) {
-            console.log('我被请求了：', req.query);
-            //todo some thing
-        });
-
+        wx.run(req, res); 
     } else {
         res.writeHead(200, {
             "content-type": "text/plain"
@@ -105,5 +110,4 @@ http.createServer(function (req, res) {
         res.end();
     }
 }).listen(3000);
-
 ```
