@@ -10,7 +10,7 @@
 微信支付接入文档：
 https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 
-微信多客服：https://mpkf.weixin.qq.com/
+微信多客服： https://mpkf.weixin.qq.com/
 
 ##	参考文档
 参考 Wechat-php-sdk(https://github.com/dodgepudding/wechat-php-sdk)

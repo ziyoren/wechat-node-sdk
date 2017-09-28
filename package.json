@@ -1,6 +1,6 @@
 {
   "name": "wechat-node-sdk",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "微信公众平台NodeJS开发包, weixin developer SDK for NodeJS.",
   "main": "lib/wechat.js",
   "scripts": {
