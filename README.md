@@ -15,6 +15,14 @@ https://mp.weixin.qq.com/cgi-bin/readtemplate?t=business/course2_tmpl&lang=zh_CN
 ##	参考文档
 参考 Wechat-php-sdk(https://github.com/dodgepudding/wechat-php-sdk)
 
+## 内部文档
+
+被动回复消息 `0.1.0+` (文档整理中)
+
+获取access_token `0.2.0+` [文档](docs/access_token.md)
+
+客服消息 `0.2.0+`  [文档](docs/custom-service.md)
+
 ## 安装
 ```
 npm install wechat-node-sdk
